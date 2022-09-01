@@ -41,11 +41,11 @@ INSTALLED_APPS = [
     # rest framework
     'corsheaders',
     'rest_framework',
+    'django_filters',
     # apps: missions, exercices, maintenances, authentification
     'missions',
     'exercices',
-    'maintenances',
-    
+    'maintenances',  
 ]
 
 MIDDLEWARE = [
@@ -133,19 +133,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        #'rest_framework_jwt.authentication.JSOWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES':[
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
 }
 
-# from datetime import timedelta
+from datetime import timedelta
 
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME':timedelta(minutes=5),
-#     'REFRESH_TOKEN_LIFETIME':timedelta(minutes=3),
-
-# }
+SIMPLE_JWT = {
+       'ACCESS_TOKEN_LIFETIME':timedelta(hours=1),
+       'REFRESH_TOKEN_LIFETIME':timedelta(days=3),
+       'AUTH_HEADER_TYPES': ('WEND-PANGA', ),
+    }
