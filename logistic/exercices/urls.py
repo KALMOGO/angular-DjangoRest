@@ -1,11 +1,12 @@
 from django.urls import path
 from .views import (
    list_create_ExercicesView ,
-   ret_upate_del_ExercicesView
+   ret_upate_del_ExercicesView,
+   exo_test
 )
 
 urlpatterns = [
     path('', list_create_ExercicesView, name="listerCreerExerrcice"),
-    path('<int:pk>/update', ret_upate_del_ExercicesView, name="upateExerrcice"),
-    path('<int:pk>/delete', ret_upate_del_ExercicesView, name="deleleExerrcice"),
+    path('<int:pk>/detail', ret_upate_del_ExercicesView, name="DetailExerrcice"),
+    path('exo/', exo_test, name="exo"),
 ]

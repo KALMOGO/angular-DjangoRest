@@ -47,8 +47,8 @@ urlpatterns = [
 
     # URL:  fournisseur de vehicule, depenses missions
    
-    # path('depensesMissions/',list_create_DepenseMissionsAPIVIEW, name="listerCreerdepensesMissions"),
-    # path('depensesMissions/<int:pk>/detail/', ret_upate_del_DepenseMissionsView, name="retUPDeldepensesMissions"),
+    path('depMissionName/',list_create_DepenseMissionsAPIVIEW, name="listerCreerdepensesMissions"),
+    path('depMissionName/<int:pk>/detail/', ret_upate_del_DepenseMissionsView, name="retUPDeldepensesMissions"),
 
     path('LoueurVehicules/',list_create_LoueurVehiculesAPIVIEW, name="listerCreerLoueur"),
     path('LoueurVehicules/<int:pk>/detail/', ret_upate_del_LoueurVehiculesView, name="retUPDelLoueur"),

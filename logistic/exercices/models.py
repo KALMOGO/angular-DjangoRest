@@ -19,11 +19,19 @@ class Exercices(models.Model):
     
     @property
     def nbreMissions(self):
-        return "nbre de mission"
+        # for watch in my_user.watch_set.select_related('movie'):
+        #     print(f'{watch.movie.title}: {watch.watched}, {watch.finished}')
+
+        result = self.liste_missions.values('liste_depenses')
+
+        for el in result :
+            print(el)
+
+        return f"{self.liste_missions.all().values('liste_depenses')}"
     
     @property
     def totalDepenseMaintenances(self):
-        return "depense main"
+        return f"{self.maintenances.all().aggregate(models.Sum('montant'))['montant__sum']}"
 
     @property
     def totalDepenseMission(self):
