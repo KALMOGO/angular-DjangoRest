@@ -22,10 +22,9 @@ headers = {
     "Authorization" : f"WEND-PANGA {token}"
 }
 
-if get_response.status_code ==200 :
+if get_response.status_code ==200:
     endpoint = "http://127.0.0.1:8000/exercices"
     get_exo =  request.get(endpoint, headers=headers)
     print(get_exo.json())
-
-
+    
 # https://httpbin.org/ : Good web site about http verbs
