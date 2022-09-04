@@ -3,6 +3,7 @@ from .views import (
    list_create_ExercicesView ,
    ret_upate_del_ExercicesView,
    exo_test
+
 )
 
 urlpatterns = [

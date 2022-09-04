@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'maintenances',  
 ]
 
+CORS_ALLOWED_ORIGINS= [
+    'http://localhost:4200',
+]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -141,7 +145,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 2
+    'PAGE_SIZE': 10
 }
 
 from datetime import timedelta

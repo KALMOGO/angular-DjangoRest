@@ -1,0 +1,19 @@
+
+
+<div>
+  <mat-list *ngFor="let exercice of listeExercices; let i=index">
+    <h3 matSubheader>Exercice du {{exercice.results[i].date_exercice}} </h3>
+    <mat-list-item >
+       <p matLine class="demo-2">
+          <span>Etat : {{exercice.results[i].etat_exercice}}</span>
+        </p>
+
+        <mat-action-list>
+          <a mat-stroked-button (click)="loginMission(exercice.results[i])" >mission</a>
+        </mat-action-list>
+
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    </mat-list>
+
+</div>

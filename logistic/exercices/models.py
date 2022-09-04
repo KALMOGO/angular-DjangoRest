@@ -40,3 +40,4 @@ class Exercices(models.Model):
     @property
     def recetteTotales(self):
         return "recette total"
+    

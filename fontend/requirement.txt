@@ -1,2 +1,4 @@
-angular-cli
-angular/material
+@angular/cli
+@angular/material
+@angular/cdk
+@angular/animations
