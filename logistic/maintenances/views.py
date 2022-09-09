@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 from .serializers import (
-    MantenanceSerializer, PiecesEchangeSerializer, 
+    InfoCoutSerializer, MantenanceSerializer, PiecesEchangeSerializer, 
     InfosPieceSerializer)
 from .models import PiecesEchanges, Mantenances, InfosPieces
 
@@ -36,12 +36,12 @@ ret_update_del_PiecesEchangesView = RetUpdateDelPiecesEchangesView.as_view()
 
 class ListCreateInfosPieceView(generics.ListCreateAPIView):
     queryset = InfosPieces.objects.all()
-    serializer_class = InfosPieceSerializer
+    serializer_class = InfoCoutSerializer
     permission_classes = [permissions.IsAdminUser]
 list_create_InfosPieceView = ListCreateInfosPieceView.as_view()
 
 class RetUpdateDelInfosPieceView(generics.RetrieveUpdateDestroyAPIView):
     queryset = InfosPieces.objects.all()
-    serializer_class = InfosPieceSerializer
+    serializer_class = InfoCoutSerializer
     permission_classes = [permissions.IsAdminUser]
 ret_update_del_InfosPieceView = RetUpdateDelInfosPieceView.as_view()

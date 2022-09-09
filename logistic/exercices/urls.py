@@ -8,6 +8,6 @@ from .views import (
 
 urlpatterns = [
     path('', list_create_ExercicesView, name="listerCreerExerrcice"),
-    path('<int:pk>/detail', ret_upate_del_ExercicesView, name="DetailExerrcice"),
+    path('<int:pk>/detail/', ret_upate_del_ExercicesView, name="DetailExerrcice"),
     path('exo/', exo_test, name="exo"),
 ]

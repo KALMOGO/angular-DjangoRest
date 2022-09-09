@@ -45,15 +45,12 @@ class RelatedVehiculesSerializer(serializers.Serializer):
     marque = serializers.CharField(read_only=True)
     couleur= serializers.CharField(read_only=True)
     est_disponible = serializers.BooleanField(read_only=True)
-    poids_vide = serializers.DecimalField(read_only=True)
+    poids_vide = serializers.DecimalField(read_only=True,  max_digits=6, decimal_places=2 )
 
 class RelatedChauffeursSerializer(serializers.Serializer):
     '''
         Relationship Serializer pour tous les vehicules
     '''
-    id = serializers.IntegerField(read_only=True)
     nom= serializers.CharField(read_only=True)
     prenom= serializers.CharField(read_only=True)
-    telephone=serializers.CharField(read_only=True)
-    salaire= serializers.DecimalField(read_only=True)
-    date_creation = serializers.DateTimeField(read_only=True)
+   

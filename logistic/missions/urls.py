@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import(
-    list_create_clientAPIVIEW, ret_upate_del_ClientsView,
+    list_create_TrajetsAPIVIEW, list_create_clientAPIVIEW, ret_upate_del_ClientsView,
     list_create_ProduitsAPIVIEW, ret_upate_del_ProduitsView,
     ret_upate_del_CategorieVehiculesView, list_create_CategorieVehiculesAPIVIEW,
     list_create_VehiculeParcsAPIVIEW, ret_upate_del_VehiculeParcsView,
@@ -11,7 +11,9 @@ from .views import(
     list_create_MissionsAPIVIEW, ret_upate_del_MissionsView, 
     list_create_DepenseMissionsAPIVIEW, ret_upate_del_DepenseMissionsView,
     list_create_LoueurVehiculesAPIVIEW, ret_upate_del_LoueurVehiculesView,
-    list_create_InfoDepenseMissionsAPIVIEW, ret_upate_del_InfoDepenseMissionsView)
+    list_create_InfoDepenseMissionsAPIVIEW, ret_upate_del_InfoDepenseMissionsView,
+    listeAcceuilMissionsView, listVehiculeProgrammerMissionView
+    )
 
 urlpatterns = [
 
@@ -42,7 +44,8 @@ urlpatterns = [
     path('recetteSansPesees/',list_create_RecetteDetailSansPesageAPIVIEW, name="listerCreerrecetteSansPesees"),
     path('recetteSansPesees/<int:pk>/detail/', ret_upate_del_RecetteDetailSansPesageView, name="retUPDelrecetteSansPesees"),
     
-    path('',list_create_MissionsAPIVIEW, name="listerCreermissions"),
+    path('creer/',list_create_MissionsAPIVIEW, name="listerCreermissions"),
+    path('<int:pk>/detail/', ret_upate_del_MissionsView, name="retUPDelmissions"),
     path('<int:pk>/detail/', ret_upate_del_MissionsView, name="retUPDelmissions"),
 
     # URL:  fournisseur de vehicule, depenses missions
@@ -55,4 +58,12 @@ urlpatterns = [
 
     path('depensesMissions/',list_create_InfoDepenseMissionsAPIVIEW, name="listerCreerLoueur"),
     path('depensesMissions/<int:pk>/detail/', ret_upate_del_InfoDepenseMissionsView, name="retUPDelLoueur"),
+
+    # url personnalise
+    path('acceuil/', listeAcceuilMissionsView, name="listeMissionAcceuil"),
+    
+    path('programmerVehicule/', listVehiculeProgrammerMissionView, name="listeChauffeurProgrammer"),
+
+    path('trajetsList/', list_create_TrajetsAPIVIEW, name="trajetsList"),
+
 ]

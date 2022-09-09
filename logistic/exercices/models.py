@@ -31,13 +31,25 @@ class Exercices(models.Model):
     
     @property
     def totalDepenseMaintenances(self):
-        return f"{self.maintenances.all().aggregate(models.Sum('montant'))['montant__sum']}"
+        return self.maintenances.all().aggregate(models.Sum('montant'))['montant__sum']
 
     @property
     def totalDepenseMission(self):
-        return "depense mission"
+        '''
+            'montant__sum' : alias par defaut pour nommer l'attribut de l'aggregation
+        '''
+        return self.infoDepenseMission.all().aggregate(models.Sum('montant'))['montant__sum']
 
     @property
     def recetteTotales(self):
-        return "recette total"
+        '''
+            l'aggregation(min, max, avg, std, ...) s'applique au attribut 
+            du model: --> methode pour faire d'autre operation avec : Somme des 
+            produits.
+            utilisation de models.F() qui permet d'appliquer des operations sur le 
+            champs des models
+        '''
+        return self.infoRecetteMission.all().aggregate(
+           total= models.Sum(models.F('cout_unitaire')* models.F('qte_produit'))
+            )['total']
     

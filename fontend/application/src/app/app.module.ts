@@ -10,6 +10,11 @@ import { AppRoutingModule } from './app-routing';
 import { ExercicesComponent } from './components/exercices/exercices.component';
 import { MissionsComponent } from './components/missions/missions.component';
 import { ProgrammerComponent } from './components/missions/programmer/programmer.component';
+import { OrdreMissionComponent } from './components/missions/ordre-mission/ordre-mission.component';
+import { BilanMissionsComponent } from './components/missions/bilan-missions/bilan-missions.component';
+import { ModalActionMissionComponent } from './components/missions/modal-action-mission/modal-action-mission.component';
+import { ListeMissionComponent } from './components/missions/liste-mission/liste-mission.component';
+import { DetailMissionComponent } from './components/missions/detail-mission/detail-mission.component';
 
 
 @NgModule({
@@ -18,7 +23,12 @@ import { ProgrammerComponent } from './components/missions/programmer/programmer
     LoginComponent,
     ExercicesComponent,
     MissionsComponent,
-    ProgrammerComponent
+    ProgrammerComponent,
+    OrdreMissionComponent,
+    BilanMissionsComponent,
+    ModalActionMissionComponent,
+    ListeMissionComponent,
+    DetailMissionComponent
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   imports: [

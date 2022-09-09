@@ -1,7 +1,7 @@
 from dataclasses import fields
 from rest_framework import generics, permissions
 from .models import Exercices
-from .serializers import ExercicesSerializer
+from .serializers import ExercicesFinanceInfoSerializer, ExercicesSerializer
 #import rest_framework_filters as filters
 
 from rest_framework import filters
@@ -30,7 +30,7 @@ class RetUpdateDelExercices(generics.RetrieveUpdateDestroyAPIView):
         View pour put, patch, delete des exercices 
     '''
     queryset = Exercices.objects.all()
-    serializer_class = ExercicesSerializer
+    serializer_class = ExercicesFinanceInfoSerializer
     permission_classes = [permissions.IsAdminUser]
 
 ret_upate_del_ExercicesView = RetUpdateDelExercices.as_view()

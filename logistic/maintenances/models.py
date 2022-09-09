@@ -29,7 +29,7 @@ class Mantenances(models.Model):
     vehiculeConcerne = models.ForeignKey(VehiculeParcs, related_name='maintenances_effectuees', on_delete=models.CASCADE)
     piecesEchangees = models.ManyToManyField(
         PiecesEchanges, through='InfosPieces', through_fields=('maintenanceConcernee', 'nomPiece'),
-        ) #main.pieces.add(pie1), remove 
+        ) # ne references un uniquement que l'id des pieces
 
     class Meta:
         ordering=['vehiculeConcerne','-date_creation']
@@ -37,7 +37,7 @@ class Mantenances(models.Model):
     def __str__(self):
         return f"{self.vehiculeConcerne}"
 
-    
+
 class InfosPieces(models.Model): 
     '''
         model le cout des pieces et leur nombre
@@ -50,10 +50,14 @@ class InfosPieces(models.Model):
 
     class Meta:
         ordering=['maintenanceConcernee','-date_creation']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['maintenanceConcernee', 'nomPiece'],
+                 name='unique_id_maint_piece')]
+
 
     def __str__(self):
         return f'{ self.maintenanceConcernee}'
-    
     @property
     def prix_Achat(self):
-        return ".2f" %(self.nombre * self.coutUnitaire)
+        return f"{self.nombre * self.coutUnitaire}"

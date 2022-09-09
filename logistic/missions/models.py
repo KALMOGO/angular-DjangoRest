@@ -1,6 +1,7 @@
         # MODEL : PACKAGE MISSION
 
 from datetime import datetime
+from pyexpat import model
 from django.db import models
 import django.db.models.constraints as _
 from django.contrib.auth.models import User
@@ -152,7 +153,6 @@ class LoueurVehicules(models.Model):
     def __str__(self):
         return f'{self.nom} - {self.prenom}'
 
-
 class VehiculeLoues(Vehicules):
     '''
         tables des vehicule loues
@@ -221,6 +221,10 @@ class DepenseMissions(models.Model):
     def __str__(self) -> str:
         return self.intitule
 
+    @property
+    def montant(self):
+        return self.detail_cout.all().aggregate(total=models.Sum('montant'))['total']
+
 class Missions(models.Model):
     ''''
         tables contenant la liste des missions realisees
@@ -261,14 +265,18 @@ class Missions(models.Model):
     motif = models.CharField(
         max_length=250,
         choices=LISTES_MOTIFS,
-        default='Approvissionement',
-        unique=True)
+        default='Approvissionement')
     
     class Meta:
         ordering = ['-date_mission']
 
     def __str__(self) -> str:
         return f" mission du {self.date_mission}"
+
+    @property
+    def sommeDepenses(self):
+        return self.info_depenses.values('montant','intitule_depense')
+        # .aggregate(models.Sum('montant'))['montant__sum']
 
 
 class InfoDepenseMissions(models.Model):
@@ -288,11 +296,17 @@ class InfoDepenseMissions(models.Model):
     montant = models.DecimalField(max_digits=10, decimal_places=5, default=0.0)
     date_creation = models.DateTimeField(auto_now_add=True)
 
+    # Denormalisation pour failite les requetes
+    exercice = models.ForeignKey(
+        Exercices,
+        related_name='infoDepenseMission', 
+        on_delete=models.CASCADE)
+
     class Meta:
         ordering = ['intitule_depense']
 
     def __str__(self) -> str:
-        return self.intitule_depense
+        return f'{self.intitule_depense}'
 
 class Recettes(models.Model):
     ''''
@@ -318,11 +332,16 @@ class Recettes(models.Model):
     qte_produit = models.PositiveIntegerField(default=1)
     date_creation = models.DateTimeField(auto_now_add=True)
 
+    exercice = models.ForeignKey(
+    Exercices,
+    related_name='infoRecetteMission', 
+    on_delete=models.CASCADE)
+
     class Meta:
         ordering = ['-date_creation']
 
     def __str__(self) -> str:
-        return self.mission
+        return f"{self.mission}"
 
     @property
     def total(self):

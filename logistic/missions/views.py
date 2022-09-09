@@ -1,12 +1,13 @@
+from asyncio import constants
 from rest_framework import generics, permissions
 from .serializers import (
     ClientSerializer, ProduitsSerializer,
-    VehiculeParcsSerializer, LoueurVehiculesSerializer,
+    VehiculeParcsSerializer, LoueurVehiculesSerializer, chauffeurVehiculeMissionSerializer,
     documentVehiculesSerializer, CategorieVehiculesSerializer,
     RecetteDetailPesageSerializer, RecetteDetailSansPesageSerializer,
     MissionsSerializer,InfoDepenseMissionsSerializer,ChauffeursSerializer,
     VehiculesSerializer,TrajetsSerializer, VehiculeLouesSerializer,
-     DepenseMissionsSerializer)
+     DepenseMissionsSerializer, listAcceuilMissionExerciceSerializer)
 
 from .models import (
     Clients, Produits, VehiculeParcs, VehiculeLoues,
@@ -21,6 +22,8 @@ class ClientListCreateAPIView(generics.ListCreateAPIView):
     '''
     queryset = Clients.objects.all()
     serializer_class = ClientSerializer
+    paginator = None
+
 list_create_clientAPIVIEW = ClientListCreateAPIView.as_view()
 
 
@@ -41,6 +44,7 @@ class ProduitsListCreateAPIView(generics.ListCreateAPIView):
     queryset = Produits.objects.all()
     serializer_class = ProduitsSerializer
     permission_classes = [permissions.IsAdminUser]
+    paginator = None
 list_create_ProduitsAPIVIEW = ProduitsListCreateAPIView.as_view()
 
 class RetUpdateDelProduits(generics.RetrieveUpdateDestroyAPIView):
@@ -60,6 +64,7 @@ class TrajetsListCreateAPIView(generics.ListCreateAPIView):
     queryset = Trajets.objects.all()
     serializer_class = TrajetsSerializer
     permission_classes = [permissions.IsAdminUser]
+    paginator=None
 list_create_TrajetsAPIVIEW = TrajetsListCreateAPIView.as_view()
 
 class RetUpdateDelTrajets(generics.RetrieveUpdateDestroyAPIView):
@@ -207,6 +212,7 @@ class MissionsListCreateAPIView(generics.ListCreateAPIView):
     queryset = Missions.objects.all()
     serializer_class = MissionsSerializer
     permission_classes = [permissions.IsAdminUser]
+
 list_create_MissionsAPIVIEW = MissionsListCreateAPIView.as_view()
 
 class RetUpdateDelMissions(generics.RetrieveUpdateDestroyAPIView):
@@ -226,6 +232,7 @@ class DepenseMissionsListCreateAPIView(generics.ListCreateAPIView):
     queryset = DepenseMissions.objects.all()
     serializer_class = DepenseMissionsSerializer
     permission_classes = [permissions.IsAdminUser]
+    paginator = None
 list_create_DepenseMissionsAPIVIEW = DepenseMissionsListCreateAPIView.as_view()
 
 class RetUpdateDelDepenseMissions(generics.RetrieveUpdateDestroyAPIView):
@@ -273,3 +280,26 @@ class RetUpdateDeInfoDepenseMissions(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = InfoDepenseMissionsSerializer
     permission_classes = [permissions.IsAdminUser]
 ret_upate_del_InfoDepenseMissionsView = RetUpdateDeInfoDepenseMissions.as_view()
+
+# vue personnalise 
+class ListAcceuilMissionView(generics.ListAPIView):
+    serializer_class = listAcceuilMissionExerciceSerializer
+
+    def get_queryset(self):
+        queryset = Missions.objects.all()
+
+        id_exercice = self.request.query_params.get("exercice")
+       
+        if id_exercice is not None :
+            queryset = queryset.filter(exercice_conerne__in=id_exercice)
+            return queryset
+        return None
+listeAcceuilMissionsView = ListAcceuilMissionView.as_view()
+
+class ListVehiculeProgrammerMission(generics.ListAPIView):
+    queryset = VehiculeParcs.objects.all()
+    serializer_class = chauffeurVehiculeMissionSerializer
+    permission_classes = [permissions.IsAdminUser]
+    paginator = None
+
+listVehiculeProgrammerMissionView = ListVehiculeProgrammerMission.as_view()

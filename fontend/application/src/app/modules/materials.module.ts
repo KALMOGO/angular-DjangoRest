@@ -16,6 +16,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const materialComponents: any[] = [
      MatButtonModule,
@@ -34,7 +36,11 @@ const materialComponents: any[] = [
      MatSelectModule,
      MatCheckboxModule,
      MatRadioModule,
-     MatIconModule
+     MatIconModule,
+     MatDialogModule,
+     MatSnackBarModule,
+
+
 ]
 
 @NgModule({
