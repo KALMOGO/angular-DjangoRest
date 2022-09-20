@@ -7,23 +7,13 @@ from missions.models import InfoDepenseMissions
 from .models import Exercices
 
 class ExercicesSerializer(serializers.ModelSerializer):
-    # etat_exercice = serializers.BooleanField(read_only=True)
-    # maintenance = serializers.SerializerMethodField()
 
     class Meta:
         model = Exercices
         fields= (
             'id',
             'date_exercice',
-            'etat_exercice',
-        )
-
-  
-    # def get_maintenance(self, obj):
-    #     return {
-    #         'nombre':obj.maintenances.count(),
-    #         'montant':obj.totalDepenseMaintenances
-    #     }
+            'etat_exercice',)
 
 class RelatedExercicesSerializer(serializers.Serializer):
     date_exercice = serializers.DateTimeField(read_only=True)
@@ -60,4 +50,3 @@ class ExercicesFinanceInfoSerializer(serializers.Serializer):
             Retourne la somme total des recette dans un exercice
         '''
         return obj.recetteTotales
-

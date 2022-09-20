@@ -1,11 +1,10 @@
         # MODEL : PACKAGE MISSION
 
+from asyncio import constants
 from datetime import datetime
-from pyexpat import model
 from django.db import models
 import django.db.models.constraints as _
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from exercices.models import Exercices
 
     # Create your models here.
@@ -80,7 +79,6 @@ class CategorieVehicules(models.Model):
     def __str__(self) -> str:
         return self.intitule
     
-
 class Vehicules(models.Model):
     '''
         table contenant la liste de tous les vehicules
@@ -105,13 +103,23 @@ class Vehicules(models.Model):
     def __str__(self) -> str:
         return self.immat
 
-
 class VehiculeParcs(Vehicules):
     '''
         tables contenant la liste des vehicules du propre 
         au parc automobile
     '''
-    pass
+    
+    @property
+    def total_depenses_Mission(self):
+        return None
+
+    @property
+    def total_Maintenance(self):
+        return None
+
+    @property
+    def total_recette(self):
+        return None
 
 class Chauffeurs(models.Model):
     '''
@@ -136,7 +144,6 @@ class Chauffeurs(models.Model):
     
     def __str__(self) -> str:
         return f"{self.nom} {self.prenom}"
-
 
 class LoueurVehicules(models.Model):
     '''
@@ -202,7 +209,6 @@ class documentVehicules(docsTransports):
         on_delete=models.CASCADE
     )
 
-
 class DepenseMissions(models.Model):
     '''
         tables contanant l'intitule des depenses
@@ -224,6 +230,7 @@ class DepenseMissions(models.Model):
     @property
     def montant(self):
         return self.detail_cout.all().aggregate(total=models.Sum('montant'))['total']
+
 
 class Missions(models.Model):
     ''''
@@ -252,7 +259,7 @@ class Missions(models.Model):
     liste_produits = models.ManyToManyField(
         Produits,
         through='Recettes',
-        through_fields=('mission','produit'))
+        through_fields=('mission','produit'), related_name='liste_produits')
 
     liste_depenses = models.ManyToManyField(
         DepenseMissions,
@@ -277,7 +284,6 @@ class Missions(models.Model):
     def sommeDepenses(self):
         return self.info_depenses.values('montant','intitule_depense')
         # .aggregate(models.Sum('montant'))['montant__sum']
-
 
 class InfoDepenseMissions(models.Model):
     ''''
@@ -339,7 +345,11 @@ class Recettes(models.Model):
 
     class Meta:
         ordering = ['-date_creation']
-
+        constraints = [
+            models.UniqueConstraint(fields=('produit', 'mission', 'client_concerne'), 
+            name="unique_recette_key"),
+        ]
+        
     def __str__(self) -> str:
         return f"{self.mission}"
 
@@ -347,21 +357,25 @@ class Recettes(models.Model):
     def total(self):
         return ".2f"%(self.cout_unitaire * self.qte_produit )
 
-class RecetteDetailSansPesage(Recettes):
-    ''''
-        tables contenant la liste des recettes dont le systeme de calcule 
-        ne se base pas sur le poids des pesees
-    '''
-    pass
+# class RecetteDetailSansPesage(models.Model):
+#     ''''
+#         tables contenant la liste des recettes dont le systeme de calcule 
+#         ne se base pas sur le poids des pesees
+#     '''
+#     id_recette = models.ForeignKey(Recettes, related_name="infos_snsPesee", on_delete=models.CASCADE)
 
-class RecetteDetailPesage(Recettes):
-    ''''
-        tables contenant la liste des recettes dont le systeme de calcule 
-        se base pas sur le poids des pesees
-    '''
-    premier_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    deuxieme_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+#     class Meta:
+#         ordering = ['-id_recette']
 
+#     def __str__(self) -> str:
+#         return f"{self.id_recette}"
 
+# class RecetteDetailPesage(models.Model):
+#     ''''
+#         tables contenant la liste des recettes dont le systeme de calcule 
+#         se base pas sur le poids des pesees
+#     '''
 
-
+#     id_recette = models.ForeignKey(Recettes, related_name="infos_pesee", on_delete=models.CASCADE)
+#     premier_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+#     deuxieme_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)

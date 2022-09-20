@@ -1,10 +1,12 @@
-from asyncio import constants
 from rest_framework import generics, permissions
+from rest_framework.response import Response
+import rest_framework.status as status
+
 from .serializers import (
-    ClientSerializer, ProduitsSerializer,
+    ClientSerializer, ProduitsSerializer, StatistiqueParDepensesSerializer, StatistiqueVehiculesParc,
     VehiculeParcsSerializer, LoueurVehiculesSerializer, chauffeurVehiculeMissionSerializer,
     documentVehiculesSerializer, CategorieVehiculesSerializer,
-    RecetteDetailPesageSerializer, RecetteDetailSansPesageSerializer,
+    #RecetteDetailPesageSerializer, RecetteDetailSansPesageSerializer,
     MissionsSerializer,InfoDepenseMissionsSerializer,ChauffeursSerializer,
     VehiculesSerializer,TrajetsSerializer, VehiculeLouesSerializer,
      DepenseMissionsSerializer, listAcceuilMissionExerciceSerializer)
@@ -12,7 +14,7 @@ from .serializers import (
 from .models import (
     Clients, Produits, VehiculeParcs, VehiculeLoues,
     CategorieVehicules, documentVehicules, Trajets,
-    RecetteDetailPesage, RecetteDetailSansPesage,
+    #RecetteDetailPesage, RecetteDetailSansPesage,
     Chauffeurs, Missions, LoueurVehicules,
     DepenseMissions, InfoDepenseMissions, Vehicules)
 
@@ -149,24 +151,34 @@ class RetUpdateDelChauffeurs(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAdminUser]
 ret_upate_del_ChauffeursView = RetUpdateDelChauffeurs.as_view()
 
-class RecetteDetailPesageListCreateAPIView(generics.ListCreateAPIView):
-    '''
-        View: get, post RecetteDetailPesage
-    '''
-    queryset = RecetteDetailPesage.objects.all()
-    serializer_class = RecetteDetailPesageSerializer
-    permission_classes = [permissions.IsAdminUser]
-list_create_RecetteDetailPesageAPIVIEW = RecetteDetailPesageListCreateAPIView.as_view()
+# class RecetteDetailPesageListCreateAPIView(generics.ListCreateAPIView):
+#     '''
+#         View: get, post RecetteDetailPesage
+#     '''
+#     queryset = RecetteDetailPesage.objects.all()
+#     serializer_class = RecetteDetailPesageSerializer
+#     permission_classes = [permissions.IsAdminUser]
 
-class RetUpdateDelRecetteDetailPesage(generics.RetrieveUpdateDestroyAPIView):
-    '''
-        View pour put, patch, delete des RecetteDetailPesage 
-    '''
-    queryset = RecetteDetailPesage.objects.all()
-    serializer_class = RecetteDetailPesageSerializer
-    permission_classes = [permissions.IsAdminUser]
-ret_upate_del_RecetteDetailPesageView = RetUpdateDelRecetteDetailPesage.as_view()
+#     def post(self, request, *args, **kwargs):
+#         serializer = RecetteDetailPesageSerializer(data=request.data, many=True)
 
+#         if serializer.is_valid(raise_exception=True):
+#             self.perform_create(serializer)
+#             headers = self.get_success_headers(serializer.data)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+#         return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+
+# list_create_RecetteDetailPesageAPIVIEW = RecetteDetailPesageListCreateAPIView.as_view()
+
+# class RetUpdateDelRecetteDetailPesage(generics.RetrieveUpdateDestroyAPIView):
+#     '''
+#         View pour put, patch, delete des RecetteDetailPesage 
+#     '''
+#     queryset = RecetteDetailPesage.objects.all()
+#     serializer_class = RecetteDetailPesageSerializer
+#     permission_classes = [permissions.IsAdminUser]
+# ret_upate_del_RecetteDetailPesageView = RetUpdateDelRecetteDetailPesage.as_view()
 
 class documentVehiculesListCreateAPIView(generics.ListCreateAPIView):
     '''
@@ -186,23 +198,33 @@ class RetUpdateDeldocumentVehicules(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAdminUser]
 ret_upate_del_documentVehiculesView = RetUpdateDeldocumentVehicules.as_view()
 
-class RecetteDetailSansPesageListCreateAPIView(generics.ListCreateAPIView):
-    '''
-        View: get, post RecetteDetailSansPesage
-    '''
-    queryset = RecetteDetailSansPesage.objects.all()
-    serializer_class = RecetteDetailSansPesageSerializer
-    permission_classes = [permissions.IsAdminUser]
-list_create_RecetteDetailSansPesageAPIVIEW = RecetteDetailSansPesageListCreateAPIView.as_view()
+# class RecetteDetailSansPesageListCreateAPIView(generics.ListCreateAPIView):
+#     '''
+#         View: get, post RecetteDetailSansPesage
+#     '''
+#     queryset = RecetteDetailSansPesage.objects.all()
+#     serializer_class = RecetteDetailSansPesageSerializer
+#     permission_classes = [permissions.IsAdminUser]
 
-class RetUpdateDelRecetteDetailSansPesage(generics.RetrieveUpdateDestroyAPIView):
-    '''
-        View pour put, patch, delete des RecetteDetailSansPesage 
-    '''
-    queryset = RecetteDetailSansPesage.objects.all()
-    serializer_class = RecetteDetailSansPesageSerializer
-    permission_classes = [permissions.IsAdminUser]
-ret_upate_del_RecetteDetailSansPesageView = RetUpdateDelRecetteDetailSansPesage.as_view()
+#     def post(self, request, *args, **kwargs):
+#         serializer = RecetteDetailSansPesageSerializer(data=request.data, many=True)
+#         if serializer.is_valid(raise_exception=True):
+#             self.perform_create(serializer)
+#             headers = self.get_success_headers(serializer.data)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+#         return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+
+# list_create_RecetteDetailSansPesageAPIVIEW = RecetteDetailSansPesageListCreateAPIView.as_view()
+
+# class RetUpdateDelRecetteDetailSansPesage(generics.RetrieveUpdateDestroyAPIView):
+#     '''
+#         View pour put, patch, delete des RecetteDetailSansPesage 
+#     '''
+#     queryset = RecetteDetailSansPesage.objects.all()
+#     serializer_class = RecetteDetailSansPesageSerializer
+#     permission_classes = [permissions.IsAdminUser]
+# ret_upate_del_RecetteDetailSansPesageView = RetUpdateDelRecetteDetailSansPesage.as_view()
 
 
 class MissionsListCreateAPIView(generics.ListCreateAPIView):
@@ -303,3 +325,20 @@ class ListVehiculeProgrammerMission(generics.ListAPIView):
     paginator = None
 
 listVehiculeProgrammerMissionView = ListVehiculeProgrammerMission.as_view()
+
+
+class StatistiqueVehiculeParc(generics.ListAPIView):
+    queryset = VehiculeParcs.objects.all()
+    serializer_class = StatistiqueVehiculesParc
+    permission_classes = [permissions.IsAdminUser]
+
+infos_finance_vehicule_parc = StatistiqueVehiculeParc.as_view()
+
+
+class StatistiqueParTypeDepenses(generics.ListAPIView):
+
+    queryset = DepenseMissions.objects.all()
+    serializer_class = StatistiqueParDepensesSerializer
+    permission_classes = [permissions.IsAdminUser]
+    paginator = None
+info_finance_par_type_depense = StatistiqueParTypeDepenses.as_view()

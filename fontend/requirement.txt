@@ -2,3 +2,4 @@
 @angular/material
 @angular/cdk
 @angular/animations
+moment

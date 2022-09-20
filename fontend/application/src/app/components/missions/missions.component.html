@@ -14,6 +14,9 @@
   </mat-card>
   </mat-toolbar>
 
+  <mat-spinner *ngIf="isWait" ></mat-spinner>
+
+
     <!-- Sous bar de navigation vertical -->
   <div *ngIf="!isImprimer">
       <div class='kl-side-bar'>
@@ -50,8 +53,8 @@
             </mat-form-field>
           </section>
 
-          <section>
             <!-- Section choix de l'etat des mission à afficher  -->
+          <section>
             <mat-button-toggle-group (change)="listerMissionParStatus(choiceStatus.value)"
                  #choiceStatus="matButtonToggleGroup" appearance="legacy">
               <mat-button-toggle [value]="true">En cours</mat-button-toggle>
@@ -81,7 +84,7 @@
             <mat-list-option  color="primary" [value]="mission"
             *ngFor="let mission of listeMission" >
 
-            {{mission.chauffeur[0].nom}} {{mission.chauffeur[0].prenom}}
+            {{mission.chauffeur.nom}} {{mission.chauffeur.prenom}}
 
           </mat-list-option>
           </mat-selection-list>
@@ -163,7 +166,7 @@
 
   <!-- Ordre de mission component+ bouton de retour à l'acceuil -->
 <div class="kl-impression" *ngIf="isImprimer ">
-  <app-ordre-mission (isRetourToMission)="isImprimer">
+  <app-ordre-mission (isRetourToMission)="isImprimer" [mission]="missionSelected[0]" >
   </app-ordre-mission>
 </div>
 

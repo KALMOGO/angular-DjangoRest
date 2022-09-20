@@ -18,6 +18,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 const materialComponents: any[] = [
      MatButtonModule,
@@ -39,6 +40,7 @@ const materialComponents: any[] = [
      MatIconModule,
      MatDialogModule,
      MatSnackBarModule,
+     MatProgressSpinnerModule
 
 
 ]

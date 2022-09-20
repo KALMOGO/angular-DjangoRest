@@ -52,4 +52,3 @@ class Exercices(models.Model):
         return self.infoRecetteMission.all().aggregate(
            total= models.Sum(models.F('cout_unitaire')* models.F('qte_produit'))
             )['total']
-    
