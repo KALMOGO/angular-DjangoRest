@@ -239,7 +239,7 @@ class Missions(models.Model):
 
     LISTES_MOTIFS=[
         ('Approvissionement', 'Approvissionement'),
-        ('Livraision', 'Livraison')]
+        ('Livraison', 'Livraison')]
 
     exercice_conerne = models.ForeignKey(
         Exercices,

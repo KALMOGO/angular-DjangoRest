@@ -183,7 +183,7 @@ export class OrdreMissionComponent implements OnInit, OnDestroy {
           }
 
           #trajet{
-            border:2px solid black;border-radius: 8px; width: 99%;
+            border:2px solid black;  border-radius: 8px; width: 90%;
           }
           table{
             width: 98%
@@ -201,6 +201,16 @@ export class OrdreMissionComponent implements OnInit, OnDestroy {
 
           table td.dep{
             text-align:center;
+          }
+          .kl-main-div-print{
+            border:2px solid black;
+            border-radius: 8px;
+            width:  90%;
+          }
+
+          #kl-div-only{
+            margin-top: 20px; padding-left: 10px; width:87%; font-size:18px;
+            display:flex; justify-content:space-between;
           }
           </style>
         </head>

@@ -145,3 +145,18 @@ hr, #trajet, #kl-data-info::after{
 header{
   margin-bottom: -5px;
 }
+
+.kl-main-div-print{
+  border:2px solid black;
+  border-radius: 8px;
+  width:  100%;
+}
+
+#kl-div-only{
+  margin-top: 20px; padding-left: 10px; width:87%; font-size:18px;
+  display:flex; justify-content:space-between;
+}
+
+#trajet{
+  border:2px solid black;  border-radius: 8px; width: 100%;
+}

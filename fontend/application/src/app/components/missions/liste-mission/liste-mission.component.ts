@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,14 @@ export class ListeMissionComponent implements OnInit {
 
   @Output() isdetail: boolean = false;
 
+  @Output()
+  mission_selected: EventEmitter<AcceuilMissionList> = new EventEmitter();
+
+  @Output()
+  mission_to_be_print:EventEmitter<AcceuilMissionList> = new EventEmitter();
+
   sub:Subscription = new Subscription();
+  isWait : boolean = true;
   exercice_id:number = -1; // exercice parent à la mission
 
   //ajout
@@ -58,9 +65,9 @@ export class ListeMissionComponent implements OnInit {
          queryParam = {...params }; // operateur de diffussion
 
        });
-
+       this.exercice_id = queryParam.params.exercice
        //recuperer la liste des missions qui lui sont relative
-       const endpointListeMission = "http://127.0.0.1:8000/missions/acceuil/?exercice="+queryParam.params.exercice
+       const endpointListeMission = "http://127.0.0.1:8000/missions/acceuil/?exercice="+this.exercice_id
        this.endPointGlobal = endpointListeMission
        this.getListeMissionAcceuil(endpointListeMission);
   }
@@ -69,7 +76,6 @@ export class ListeMissionComponent implements OnInit {
   listeMissionTerminee:AcceuilMissionList[]=[];
   listeMissionEnCours:AcceuilMissionList[]=[];
   listeMission:AcceuilMissionList[] = [];
-
   pageMissionSuivant:string= ''; // contenir l'url des pages suivant
   pageMissionPrecedent:string=''; // contenir l'url des pages precedents
 
@@ -82,11 +88,12 @@ export class ListeMissionComponent implements OnInit {
       .subscribe(
         (data:IlisteMission)=>{
           this.listeMission = data.results;
+          //console.log(this.listeMission)
            settingDePagination = data // stockage du resultat pour l'extration des params: next et previous
            // impossible de les affectés directement au var de pagination
         },
         (error:any)=>{
-        console.log(error)
+          console.log(error)
         },
         ()=>{
 
@@ -98,6 +105,8 @@ export class ListeMissionComponent implements OnInit {
 
             if(settingDePagination.previous ==null) this.pageMissionPrecedent =' '; // important pour eviter les urls null
             else this.pageMissionPrecedent=settingDePagination.previous;
+
+            this.isWait = false;
         }
       )
 
@@ -106,7 +115,7 @@ export class ListeMissionComponent implements OnInit {
   listerMissionParStatus(statusCh:any){
     // bouton de filtrage de mission en fonction du status : changement du contenu du tableau
     // listeMission en fonction du cas
-     if(statusCh==false) this.listeMission = this.listeMissionTerminee
+     if(statusCh==false) {this.listeMission = this.listeMissionTerminee;}
      else this.listeMission = this.listeMissionEnCours
   }
 
@@ -124,7 +133,6 @@ export class ListeMissionComponent implements OnInit {
     }
 
     // par defaut la liste des mission en cours
-    this.listeMission = this.listeMissionEnCours;
   }
 
 // methode GET de pagination
@@ -136,7 +144,10 @@ export class ListeMissionComponent implements OnInit {
     switch(is_pageSuivant){
       case true:
         if(this.pageMissionSuivant != ' ')
-        { this.getListeMissionAcceuil(this.pageMissionSuivant);}
+        {
+          // probleme : le filtrage doit etre fait en fonction du choix de l'etat
+           this.getListeMissionAcceuil(this.pageMissionSuivant);
+          }
       break;
 
       case false:
@@ -151,17 +162,17 @@ export class ListeMissionComponent implements OnInit {
   onUpdateMissionStatus(missionSelection:any[]){
       // recuperer la liste des elements à supprmer
 
-      missionSelection.forEach((obj)=>{
+    missionSelection.forEach((obj)=>{
         //modifier l'etat de la mission
 
-        if(obj.etat_mission == false){
-           obj.etat_mission = true;
+        if(obj.value.etat_mission == false){
+            obj.value.etat_mission = true;
           }
         else {
-          obj.etat_mission = false;
+          obj.value.etat_mission = false;
         }
         //
-        this.serviceMission.endMission(obj).subscribe(
+        this.serviceMission.endMission(obj.value).subscribe(
           (data:any)=>{
               console.log(data);
           },
@@ -179,9 +190,10 @@ export class ListeMissionComponent implements OnInit {
   onSupprimerMissions(missionSelection:any[]){
 
     // recuperer la liste des elements à supprmer
+    console.log(missionSelection)
     missionSelection.forEach((obj)=>{
 
-      this.serviceMission.deleteMission(obj.id).subscribe(
+      this.serviceMission.deleteMission(obj.value.id).subscribe(
         (data:any)=>{
             console.log(data)
         },
@@ -189,114 +201,52 @@ export class ListeMissionComponent implements OnInit {
             console.log(error)
         },
         ()=>{
-          this.getListeMissionAcceuil(this.endPointGlobal)
+          this.getListeMissionAcceuil("http://127.0.0.1:8000/missions/acceuil/?exercice="+this.exercice_id)
         }
       )
   })
   }
 
 // menu de navigation dans le component
-  isAcceuilMission! : boolean;
+  isAcceuilMission : boolean = true;
   isProgrammerMission : boolean = false;
   isBilan: boolean = false;
   isRetour:boolean = false;
+  isImprimer:boolean = false;
 
-  gotoMenuItem(nom:string){
+  retourToMission:boolean = false;
 
-    switch(nom){
-      case 'acceuil' :
-          this.isAcceuilMission = true;
-          this.isProgrammerMission = false;
-          this.isRetour = false;
-          this.isBilan = false;
-          this.isdetail = false;
-
-          alert('acceuil')
-      break;
-
-      case 'programmer' :
-          this.isProgrammerMission = true;
-          this.isAcceuilMission = false;
-          this.isRetour = false;
-          this.isBilan = false;
-          this.isdetail = false;
-
-      break;
-
-      case 'bilan' :
-        this.isProgrammerMission = false;
-        this.isAcceuilMission = false;
-        this.isRetour =false ;
-        this.isBilan = true;
-        this.isdetail = false;
-
-      break;
-
-      case 'exercices' :
-        this.isProgrammerMission = false;
-        this.isAcceuilMission = false;
-        this.isRetour =false ;
-        this.isBilan = false;
-        this.isdetail = false;
-        this.router.navigate(['exercices'])
-      break;
-
-      default :
-        this.isProgrammerMission = false;
-        this.isAcceuilMission = false;
-        this.isRetour =false ;
-        this.isBilan = false;
-        this.isdetail = false;
-      break;
-    }
+  openImprimerMission(){
+    // envoie de la mission selection pour impression
+    this.mission_to_be_print.emit(this.missionSelected[0].value)
   }
 
   // go to detail des missions
   missionSelectedDetail!:AcceuilMissionList
 
   openDetailMission():void{
-    // reduire le tmp de deplacement
-    this.missionSelectedDetail = this.missionSelected[0];
-    this.isProgrammerMission = false;
+    // envoie de la mission selection pour modification
+    this.mission_selected.emit(this.missionSelected[0].value)
   }
 
   // recuperation des missions selection
-  missionSelected:AcceuilMissionList[] = [];
+  missionSelected:MatListOption[] = [];
   onSelectionMissionChange(options: MatListOption[]){
     /**
-     ** options : tableau de MatListOption contenant plusieurs option sur les valeurs
-     *            selectionnées.(MatListOption.value) contient la liste des valeurs
-     *
-     ** Algorithme de recuperation des valeurs:
-     *      options.map(selected=>console.log(selected.value));
-     *
-     **     array.filter(obj=>return (obj)) : map chaq obj de array puis retourne un tableau
-     *            uniquement un tab de obj respectant la condition
-     *
-     **     array.map(obj=> { action }) # mapper chq obj de array
+     * options contient que la liste des elements selectionnés à la fin
      */
-
-    if(this.missionSelected.length>0){
-
-        options.map((selected:any)=>{
-
-          this.missionSelected = this.missionSelected.filter((obj:AcceuilMissionList)=>{
-
-            console.log(selected.value.id)
-            return obj.id != selected.value.id
-          })
-        })
-    }
-    else  options.map(selected=>this.missionSelected.push(selected.value));
-
+    this.missionSelected = options; // recuperation de la liste des mission selectionner dans (MatListOption.value)
   }
+
     // modal de confirmation: de terminaison ou de suppression
   delai_animation_apparution:string = '300ms';
   delai_animation_disparition:string = '300ms';
 
-  openDialog(enterAnimationDuration: string,
+  openDialog(
+            enterAnimationDuration: string,
             exitAnimationDuration: string,
-            textWarning:string): void {
+            textWarning:string
+          ): void {
 
       // parametres de configuration du component modal
       const dialogRef = this.dialog.open(ModalActionMissionComponent, {
