@@ -5,8 +5,8 @@ from rest_framework import serializers
 from .models import (
     Clients, Produits, VehiculeParcs, VehiculeLoues,
     CategorieVehicules, documentVehicules, Trajets,
-   # RecetteDetailPesage, RecetteDetailSansPesage,
-    Chauffeurs, Missions, LoueurVehicules,
+    RecetteDetailPesage, RecetteDetailSansPesage,
+    Chauffeurs, Missions, LoueurVehicules,Recettes,
     DepenseMissions, InfoDepenseMissions, Vehicules
     )
 
@@ -91,30 +91,33 @@ class ChauffeursSerializer(serializers.ModelSerializer):
         model = Chauffeurs
         fields = '__all__'
 
-# class RecetteDetailPesageSerializer(serializers.ModelSerializer):
-#     '''
-#         Serializer pour le model RecetteDetailPesage
-#     '''
-#     class Meta:
-#         model = RecetteDetailPesage
-#         fields = '__all__'
+class RecetteDetailPesageSerializer(serializers.ModelSerializer):
+    '''
+        Serializer pour le model RecetteDetailPesage
+    '''
+    class Meta:
+        model = RecetteDetailPesage
+        fields = '__all__'
 
-# class RecetteDetailSansPesageSerializer(serializers.ModelSerializer):
-#     '''
-#         Serializer pour le model RecetteDetailSansPesage
-#     '''
+class RecetteDetailSansPesageSerializer(serializers.ModelSerializer):
+    '''
+        Serializer pour le model RecetteDetailSansPesage
+    '''
 
-#     class Meta:
-#         model = RecetteDetailSansPesage
-#         fields = (
-#             'produit',
-#             'mission',
-#             'client_concerne',
-#             'cout_unitaire',
-#             'qte_produit',
-#             'exercice'
-#         )
-    
+    class Meta:
+        model = RecetteDetailSansPesage
+        fields = '__all__'
+
+
+class RecetteGlobleSerializer(serializers.ModelSerializer):
+    '''
+        Serializer pour le model RecetteDetailSansPesage
+    '''
+
+    class Meta:
+        model = Recettes
+        fields = '__all__'
+
 class DepenseMissionsSerializer(serializers.ModelSerializer):
     '''
         Serializer pour le model DepenseMissions
@@ -182,10 +185,10 @@ class listAcceuilMissionExerciceSerializer(serializers.ModelSerializer):
         return Vehicules.objects.filter(pk=obj.vehicule_concerne_id).values("id","immat", "couleur", "marque", "poids_vide")[0]
 
     def get_depenses(self, obj):
-        return obj.info_depenses.values("intitule_depense__intitule","montant")
+        return obj.info_depenses.values("id","intitule_depense__id","intitule_depense__intitule","montant")
 
     def get_produits(self, obj):
-        return obj.info_recette.values("client_concerne__nom", "client_concerne__prenom", "produit__nom", "produit__unite", "qte_produit") 
+        return obj.info_recette.values("id","client_concerne__id","client_concerne__nom", "client_concerne__prenom", "produit__id" ,"produit__nom", "produit__unite", "qte_produit") 
 
 class chauffeurVehiculeMissionSerializer(serializers.ModelSerializer):
     chauff = serializers.SerializerMethodField()
@@ -238,18 +241,14 @@ class StatistiqueVehiculesParc(serializers.ModelSerializer):
 
         return total 
 
-    def get_total_recette (self,obj):
+    def get_total_recette(self,obj):
         '''
             Calcul de la recette d'un vehicule en fonction d'un exercice
         '''
         request = self.context.get('request')
         id_exercice = request.__dict__.get('parser_context').get('kwargs').get('pk')  # recuperation d'un parametre de l'url dans le serializer
- 
-        montant = obj.liste_missions.filter(exercice_conerne_id=id_exercice).values('id'
-             ).aggregate(resultat=Sum(F('info_recette__cout_unitaire')* F('info_recette__qte_produit')))['resultat']
-        
 
-        return montant
+        return obj.liste_missions.filter(exercice_conerne_id=id_exercice).values('id').aggregate(resultat=Sum(F('info_recette__cout_unitaire') * F('info_recette__qte_produit')))['resultat']
 
     def get_chauffeur(self, obj):
         '''
@@ -271,3 +270,4 @@ class StatistiqueParDepensesSerializer(serializers.ModelSerializer):
         id_exercice = request.__dict__.get('parser_context').get('kwargs').get('pk')  # recuperation d'un parametre de l'url dans le serializer
         
         return   obj.detail_cout.filter(exercice=id_exercice).values('montant').aggregate(result = Sum('montant'))['result']
+

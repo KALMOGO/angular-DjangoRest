@@ -24,33 +24,33 @@
       <hr style="padding:10px; border-radius:5px; background-color: rgba(0, 0, 255, 0.744);">
   </header>
 
-  <main style="position:absolute; left:20px; right:10px;  margin: 0; width: auto;">
+  <main>
+      <div id="div_kl"  style="border:2px solid black;border-radius: 8px;width:  90%;">
 
-    <div>
-
-      <div  style="border:2px solid black;border-radius: 8px;  padding: 3px;width: 99%;">
-
-        <table style=" width: 100%">
+        <table >
           <thead>
             <tr>
               <th class="service">INFOS TRANSPORTEUR</th>
-              <th>VEHICULE</th>
+              <th style="text-align: right;">VEHICULE</th>
             </tr>
           </thead>
 
           <tbody>
             <tr>
               <td class="service">
-               <span>{{chauffeur.nom  }} {{chauffeur.prenom}}</span> <br><br>
-               <span>Tel: (+226) {{chauffeur.telephone}}</span> <br><br>
-               <span>voyage n$: {{mission_toPrint.id}}</span>
+              <span>{{chauffeur.nom  }} {{chauffeur.prenom}}</span> <br>
+              <span>Tel: (+226) {{chauffeur.telephone}}</span> <br>
+              <span>voyage n$: {{mission_toPrint.id}}</span>
               </td>
 
-              <td class="service">
-                <span>immat : {{vehicule.immat}}</span> <br><br>
-                <span>Couleur : {{vehicule.couleur}}</span> <br><br>
-                <span>Marque : {{vehicule.marque}}</span>
-               </td>
+              <td >
+                <div style="width: auto; float:right">
+                  <span>immat : {{vehicule.immat}}</span> <br>
+                  <span>Couleur : {{vehicule.couleur}}</span> <br>
+                  <span>Marque : {{vehicule.marque}}</span>
+                </div>
+
+              </td>
             </tr>
 
           </tbody>
@@ -58,11 +58,8 @@
 
       </div>
 
-      <div id="kl-data-info" style="border:2px solid black; padding: 3px; border-radius: 8px; width: 99%;" >
-
-        <div style="float:left; width: 40%; margin-right: 15px;">
-
-          <table style=" width: 100%" >
+      <div  style="border:2px solid black;border-radius: 8px; width:  90%;" >
+          <table>
             <thead>
               <tr>
                 <th class="service">PRODUITS</th>
@@ -74,40 +71,38 @@
             <tbody>
               <tr *ngFor="let produit of listeProduit">
                 <td class="service">{{produit.produit__nom}}</td>
-                <td class="qty">{{produit.qte_produit}}</td>
-                <td class="unit">{{produit.produit__unite}}</td>
+                <td class="dep">{{produit.qte_produit}}</td>
+                <td style="text-align: right;">{{produit.produit__unite}}</td>
               </tr>
             </tbody>
           </table>
-        </div>
+      </div>
 
-        <div  style="float:left; padding: 3px; width: 51%; border-radius: 8px;">
-          <table style=" width: 100%">
+      <div style="border:2px solid black; border-radius: 8px; width:  90%;" >
+          <table>
             <thead>
               <tr>
                 <th class="service">LISTES DEPENSES</th>
-                <th>MONTANT</th>
+                <th style="text-align: right;">MONTANT</th>
               </tr>
             </thead>
 
             <tbody>
               <tr *ngFor="let depense of listeDepense">
                 <td class="service"> {{depense.intitule_depense__intitule}} </td>
-                <td class="qty">{{depense.montant}}</td>
+                <td style="text-align: right;">{{depense.montant}}</td>
               </tr>
             </tbody>
           </table>
-
-        </div>
       </div>
 
-      <div id="trajet"  style="border:2px solid black; padding: 3px; border-radius: 8px; width: 99%;">
-        <table style=" width: 100%">
+      <div id="trajet"
+          style="border:2px solid black;  border-radius: 8px; width: 90%;">
+        <table style="padding:0;" >
           <thead>
             <tr>
               <th class="service">Trajet</th>
-              <th>Date Mission</th>
-              <th>Donneur d'ordre</th>
+              <th style="text-align: right;">Date Mission</th>
             </tr>
           </thead>
 
@@ -118,14 +113,11 @@
                <span>Destination 2: {{trajet.ville_arrivee}}</span> <br><br>
               </td>
 
-              <td class="service">
-                <span>Date de Depart: {{mission_toPrint.date_mission}}</span> <br><br>
-                <span>Depart: {{trajet.ville_depart}} </span> <br><br>
-               </td>
-
-               <td class="service" style="text-align:right">
-                <span>KOANDA </span>
-                <span>Abdoul </span> <br><br>
+              <td>
+                <div style="width: auto; float:right">
+                  <span>Date de Depart: {{mission_toPrint.date_mission}}</span> <br><br>
+                  <span>Ville de Depart: {{trajet.ville_depart}} </span> <br><br>
+                </div>
                </td>
             </tr>
 
@@ -133,19 +125,22 @@
         </table>
 
       </div>
+
+      <div style="margin-top: 20px; padding-left: 10px; width:87%; font-size:18px;
+                 display:flex; justify-content:space-between">
+
+          <b></b>
+          <b>Donneur d'ordre</b>
+
     </div>
 
-      <footer >
-        <mat-divider></mat-divider>
-         <div style="margin-top: 20px; width:25%; padding-left: 10px;">
-            <b>Chauffeur</b> <br> <br>
-         </div>
-      </footer>
+  </main>
+  <footer >
+    <mat-divider></mat-divider>
 
     <hr style="padding:10px; border-radius:5px; background-color: rgba(0, 0, 255, 0.744);">
     <hr style="padding:1px;border-radius:5px; background-color: red">
 
-  </main>
-
+  </footer>
 </div>
 

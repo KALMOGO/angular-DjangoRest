@@ -19,7 +19,9 @@ export class ExercicesComponent implements OnInit {
   ngOnInit(): void {
     this.exerciceSercice.getListeExercices().subscribe(
       (value:IExercices)=>{
+
         this.listeExercices.push(value)
+        console.log(value)
       },
       (err:any)=>{
         console.log(err)

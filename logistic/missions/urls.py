@@ -5,15 +5,16 @@ from .views import(
     ret_upate_del_CategorieVehiculesView, list_create_CategorieVehiculesAPIVIEW,
     list_create_VehiculeParcsAPIVIEW, ret_upate_del_VehiculeParcsView,
     list_create_VehiculeLouesAPIVIEW, ret_upate_del_VehiculeLouesView,
-   # list_create_RecetteDetailPesageAPIVIEW, ret_upate_del_RecetteDetailPesageView,
+    list_create_RecetteDetailPesageAPIVIEW, ret_upate_del_RecetteDetailPesageView,
     list_create_documentVehiculesAPIVIEW, ret_upate_del_documentVehiculesView,
-    # list_create_RecetteDetailSansPesageAPIVIEW, ret_upate_del_RecetteDetailSansPesageView,
+    list_create_RecetteDetailSansPesageAPIVIEW, ret_upate_del_RecetteDetailSansPesageView,
     list_create_MissionsAPIVIEW, ret_upate_del_MissionsView,infos_finance_vehicule_parc, 
     list_create_DepenseMissionsAPIVIEW, ret_upate_del_DepenseMissionsView,
     list_create_LoueurVehiculesAPIVIEW, ret_upate_del_LoueurVehiculesView,
     list_create_InfoDepenseMissionsAPIVIEW, ret_upate_del_InfoDepenseMissionsView,
     listeAcceuilMissionsView, listVehiculeProgrammerMissionView,
-    list_create_ChauffeursAPIVIEW,ret_upate_del_ChauffeursView, info_finance_par_type_depense
+    list_create_ChauffeursAPIVIEW,ret_upate_del_ChauffeursView, info_finance_par_type_depense,
+    list_create_RecetteGlobalAPIVIEW, ret_upate_del_RecetteRecetteGlobalDetailView
     )
 
 urlpatterns = [
@@ -32,8 +33,8 @@ urlpatterns = [
     path('vehiculeParcs/',list_create_VehiculeParcsAPIVIEW , name="listerCreerVehParcs"),
     path('vehiculeParcs/<int:pk>/detail/', ret_upate_del_VehiculeParcsView, name="retUPDelVehParcs"),
 
-    # path('recettePesees/',list_create_RecetteDetailPesageAPIVIEW , name="listerCreerRecettePesage"),
-    # path('recettePesees/<int:pk>/detail/', ret_upate_del_RecetteDetailPesageView, name="retUPDelRecettePesage"),
+    path('recettePesees/',list_create_RecetteDetailPesageAPIVIEW , name="listerCreerRecettePesage"),
+    path('recettePesees/<int:pk>/detail/', ret_upate_del_RecetteDetailPesageView, name="retUPDelRecettePesage"),
 
     path('vehiculeLoues/',list_create_VehiculeLouesAPIVIEW, name="listerCreervehiculeLoues"),
     path('vehiculeLoues/<int:pk>/detail/', ret_upate_del_VehiculeLouesView, name="retUPDelvehiculeLoues"),
@@ -42,11 +43,13 @@ urlpatterns = [
     path('docsVehicules/',list_create_documentVehiculesAPIVIEW, name="listerCreerdocsVehicules"),
     path('docsVehicules/<int:pk>/detail/', ret_upate_del_documentVehiculesView, name="retUPDeldocsVehicules"),
 
-    # path('recetteSansPesees/',list_create_RecetteDetailSansPesageAPIVIEW, name="listerCreerrecetteSansPesees"),
-    # path('recetteSansPesees/<int:pk>/detail/', ret_upate_del_RecetteDetailSansPesageView, name="retUPDelrecetteSansPesees"),
+    path('recetteSansPesees/',list_create_RecetteDetailSansPesageAPIVIEW, name="listerCreerrecetteSansPesees"),
+    path('recetteSansPesees/<int:pk>/detail/', ret_upate_del_RecetteDetailSansPesageView, name="retUPDelrecetteSansPesees"),
+    
+    path('recetteGlobale/',list_create_RecetteGlobalAPIVIEW, name="listerCreerrecetteSansPesees"),
+    path('recetteGlobale/<int:pk>/detail/', ret_upate_del_RecetteRecetteGlobalDetailView, name="retUPDelrecetteSansPesees"),
     
     path('creer/',list_create_MissionsAPIVIEW, name="listerCreermissions"),
-    path('<int:pk>/detail/', ret_upate_del_MissionsView, name="retUPDelmissions"),
     path('<int:pk>/detail/', ret_upate_del_MissionsView, name="retUPDelmissions"),
 
     # URL:  fournisseur de vehicule, depenses missions
@@ -55,7 +58,7 @@ urlpatterns = [
     path('depMissionName/<int:pk>/detail/', ret_upate_del_DepenseMissionsView, name="retUPDeldepensesMissions"),
     path('depStatistique/<int:pk>/detail/', info_finance_par_type_depense, name="info_financeTypeDep"),
 
-    path('LoueurVehicules/',list_create_LoueurVehiculesAPIVIEW, name="listerCreerLoueur"),
+    path('LoueurVe  hicules/',list_create_LoueurVehiculesAPIVIEW, name="listerCreerLoueur"),
     path('LoueurVehicules/<int:pk>/detail/', ret_upate_del_LoueurVehiculesView, name="retUPDelLoueur"),
     path('info_finance/<int:pk>/detail/', infos_finance_vehicule_parc, name="infoFinanceVehicule"),
 

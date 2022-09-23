@@ -214,6 +214,7 @@ export class MissionsComponent implements OnInit {
         this.isBilan = false;
         this.isdetail = false;
         this.isImprimer = false;
+        this.getListeMissionAcceuil(this.endPointGlobal );
       break;
 
       case 'programmer' :

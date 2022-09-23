@@ -57,6 +57,7 @@ h1 {
 }
 
 table {
+  width: 98%;
   border-collapse: collapse;
   border-spacing: 0;
   margin-bottom: 20px;
@@ -85,7 +86,6 @@ table   {
 }
 
 table td {
-  padding: 10px;
   text-align: right;
 }
 

@@ -357,25 +357,26 @@ class Recettes(models.Model):
     def total(self):
         return ".2f"%(self.cout_unitaire * self.qte_produit )
 
-# class RecetteDetailSansPesage(models.Model):
-#     ''''
-#         tables contenant la liste des recettes dont le systeme de calcule 
-#         ne se base pas sur le poids des pesees
-#     '''
-#     id_recette = models.ForeignKey(Recettes, related_name="infos_snsPesee", on_delete=models.CASCADE)
+class RecetteDetailSansPesage(models.Model):
+    ''''
+        tables contenant la liste des recettes dont le systeme de calcule 
+        ne se base pas sur le poids des pesees
+    '''
+    id_recette = models.ForeignKey(Recettes, related_name="infos_snsPesee", on_delete=models.CASCADE)
 
-#     class Meta:
-#         ordering = ['-id_recette']
+    class Meta:
+        ordering = ['-id_recette']
 
-#     def __str__(self) -> str:
-#         return f"{self.id_recette}"
+    def __str__(self) -> str:
+        return f"{self.id_recette}"
 
-# class RecetteDetailPesage(models.Model):
-#     ''''
-#         tables contenant la liste des recettes dont le systeme de calcule 
-#         se base pas sur le poids des pesees
-#     '''
+class RecetteDetailPesage(models.Model):
+    '''
+        tables contenant la liste des recettes dont le systeme de calcule 
+        se base pas sur le poids des pesees
+    '''
 
-#     id_recette = models.ForeignKey(Recettes, related_name="infos_pesee", on_delete=models.CASCADE)
-#     premier_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-#     deuxieme_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    id_recette = models.ForeignKey(Recettes, related_name="infos_pesee", on_delete=models.CASCADE)
+    premier_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    deuxieme_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+
