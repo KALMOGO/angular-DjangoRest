@@ -210,7 +210,6 @@ export class MissionsComponent implements OnInit {
 
     switch(nom){
       case 'acceuil' :
-        this.getListeMissionAcceuil(this.endPointGlobal );
         this.isAcceuilMission = true;
         this.isRetour = false;
         this.isBilan = false;

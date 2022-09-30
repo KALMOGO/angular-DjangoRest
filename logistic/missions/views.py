@@ -1,7 +1,6 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 import rest_framework.status as status
-
 from .serializers import (
     ClientSerializer, ProduitsSerializer, StatistiqueParDepensesSerializer, StatistiqueVehiculesParc,
     VehiculeParcsSerializer, LoueurVehiculesSerializer, chauffeurVehiculeMissionSerializer,
@@ -150,23 +149,35 @@ class RetUpdateDelChauffeurs(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAdminUser]
 ret_upate_del_ChauffeursView = RetUpdateDelChauffeurs.as_view()
 
+# nouveau
 class RecetteDetailPesageListCreateAPIView(generics.ListCreateAPIView):
     '''
         View: get, post RecetteDetailPesage
     '''
-    queryset = RecetteDetailPesage.objects.all()
     serializer_class = RecetteDetailPesageSerializer
-    permission_classes = [permissions.IsAdminUser]
+    paginator = None
+    
+    def get_queryset(self):
+        queryset = RecetteDetailPesage.objects.all()
 
-    def post(self, request, *args, **kwargs):
-        serializer = RecetteDetailPesageSerializer(data=request.data, many=True)
+        id_mission = self.request.query_params.get("id_mission")
 
-        if serializer.is_valid(raise_exception=True):
-            self.perform_create(serializer)
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        if id_mission is not None :
+            queryset = queryset.filter(id_mission=id_mission)
+        
+            return queryset
+        return None
+    
+    # def post(self, request, *args, **kwargs):
+    #     print(request.data)
+    #     serializer = RecetteDetailPesageSerializer(data=request.data, many=True)
 
-        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+    #     if serializer.is_valid(raise_exception=True):
+    #         self.perform_create(serializer)
+    #         headers = self.get_success_headers(serializer.data)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    #     return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 list_create_RecetteDetailPesageAPIVIEW = RecetteDetailPesageListCreateAPIView.as_view()
 
@@ -179,13 +190,27 @@ class RetUpdateDelRecetteDetailPesage(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAdminUser]
 ret_upate_del_RecetteDetailPesageView = RetUpdateDelRecetteDetailPesage.as_view()
 
+# nouveau 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta # module d'ajout de nbre sur une date.. (timedelta)
 class documentVehiculesListCreateAPIView(generics.ListCreateAPIView):
     '''
         View: get, post documentVehicules
     '''
-    queryset = documentVehicules.objects.all()
     serializer_class = documentVehiculesSerializer
     permission_classes = [permissions.IsAdminUser]
+        
+    def get_queryset(self):
+        '''
+            recuperation uniquement des documents dont la date d'expiration est 
+            inferieur à 3 mois (date_exp.mois - today.mois <= 3)
+        '''
+        queryset = documentVehicules.objects.all()
+
+        queryset = queryset.filter(date_expiration__month__lte=datetime.now().month+3,date_expiration__year= datetime.now().year)
+
+        return queryset
+    
 list_create_documentVehiculesAPIVIEW = documentVehiculesListCreateAPIView.as_view()
 
 class RetUpdateDeldocumentVehicules(generics.RetrieveUpdateDestroyAPIView):
@@ -377,32 +402,6 @@ class RetUpdateDelRecetteGlobal(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recettes.objects.all()
     serializer_class = RecetteGlobleSerializer
     permission_classes = [permissions.IsAdminUser]
-    
-    def get_object(self, recette_id):
-        try:
-            return Recettes.objects.get(id=recette_id)
-        except Recettes.DoesNotExist() as e:
-            raise status.HTTP_400_BAD_REQUEST from e
-            
-    def patch(self, request, *args, **kwargs):
-        '''
-            patch method to update many row
-        '''
-        for each_recette in request.data:
-
-            recette_id = self.get_object(each_recette['id'])
-
-            serializer = RecetteGlobleSerializer(instance=recette_id,data=request.data,partial=True)
-            
-            if not serializer.is_valid():
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-            serializer.save()
-            result = {'message': "updated sucessfully"}
-            
-            return Response(result, status=status.HTTP_201_CREATED)
-        
-        return Response({"invalid method"}, status=status.HTTP_BAD_REQUEST)
 
 ret_upate_del_RecetteRecetteGlobalDetailView = RetUpdateDelRecetteGlobal.as_view()
 

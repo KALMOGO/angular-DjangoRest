@@ -19,6 +19,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 const materialComponents: any[] = [
      MatButtonModule,
@@ -40,8 +41,10 @@ const materialComponents: any[] = [
      MatIconModule,
      MatDialogModule,
      MatSnackBarModule,
-     MatProgressSpinnerModule
+     MatProgressSpinnerModule,
 
+     // nouveau
+     MatExpansionModule
 
 ]
 

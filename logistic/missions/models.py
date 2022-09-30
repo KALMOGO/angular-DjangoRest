@@ -174,7 +174,10 @@ class docsTransports(models.Model):
     '''
         tables contenant la liste de tous les vehicules de transport
     '''
-    LISTE_DOCS = []
+    LISTE_DOCS = [ #nouveau
+        ('visite technique','visite technique'),
+        ('assurance', 'assurance')
+    ]
     intitule = models.CharField(max_length=250, choices=LISTE_DOCS)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_expiration = models.DateField()
@@ -191,7 +194,7 @@ class docsTransports(models.Model):
         
     @property
     def nbreMoisRestant(self):
-         return f'{self.date_expiration.month - datetime.now().month} '
+        return f'{self.date_expiration.month - datetime.now().month} '
 
 class documentVehicules(docsTransports):
     '''
@@ -202,7 +205,7 @@ class documentVehicules(docsTransports):
         ('visite technique','visite technique'),
         ('assurance', 'assurance')
     ]
-    
+
     vehicule = models.ForeignKey(
         VehiculeParcs,
         related_name='infos_documents',
@@ -370,13 +373,24 @@ class RecetteDetailSansPesage(models.Model):
     def __str__(self) -> str:
         return f"{self.id_recette}"
 
+# nouveau 
 class RecetteDetailPesage(models.Model):
     '''
         tables contenant la liste des recettes dont le systeme de calcule 
         se base pas sur le poids des pesees
     '''
 
-    id_recette = models.ForeignKey(Recettes, related_name="infos_pesee", on_delete=models.CASCADE)
+    id_mission = models.ForeignKey(Missions, related_name="infos_pesee", on_delete=models.CASCADE)
     premier_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     deuxieme_pese = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-date_creation']
 
+    def __str__(self) -> str:
+        return f"{self.id_mission}"
+
+    @property
+    def poids_net(self):
+        return ".2f"%(self.deuxieme_pese - self.premier_pese)

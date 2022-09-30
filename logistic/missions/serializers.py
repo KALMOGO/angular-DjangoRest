@@ -55,13 +55,26 @@ class VehiculesSerializer(serializers.ModelSerializer):
         model = Vehicules
         fields = '__all__'
 
+#nouveau
 class documentVehiculesSerializer(serializers.ModelSerializer):
     '''
         Serializer pour le model documentVehicules
     '''
+    chauffeur = serializers.SerializerMethodField()
     class Meta:
         model = documentVehicules
-        fields = '__all__'
+        fields = (
+            'id',
+            'intitule',
+            'date_expiration',
+            'nbreJoursRestant',
+            'nbreMoisRestant',
+            'vehicule',
+            'chauffeur'
+        )
+
+    def get_chauffeur(self, obj):
+        return Chauffeurs.objects.filter(vehicule=obj.vehicule).values("id","nom", "prenom", "telephone")[0]
 
 class VehiculeParcsSerializer(VehiculesSerializer):
     # nbreDocument = serializers.SerializerMethodField(read_only=True)

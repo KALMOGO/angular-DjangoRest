@@ -14,7 +14,7 @@
   </mat-card>
   </mat-toolbar>
 
-    <!-- Sous bar de navigation vertical -->
+    <!-- Sous bar de navigation vertical
   <div *ngIf="!isImprimer">
       <div class='kl-side-bar'>
       <mat-selection-list  #missions [multiple]="false">
@@ -25,33 +25,34 @@
         <mat-hint></mat-hint>
       </mat-selection-list>
     </div>
-  </div>
+  </div>-->
 
   <!-- contenu de l'ecran-->
 <div id="kl-contenu" *ngIf="!isImprimer" >
-    <!-- div pour creer separer l'ecran -->
-    <div class="naim-side"></div>
+    <!-- div pour creer separer l'ecran
+    <div class="naim-side"></div> -->
 
     <div class ="kl-main-content">
       <ng-container class="kl-main-content" *ngIf="isAcceuilMission">
         <!-- Component liste des missions -->
         <app-liste-mission (mission_to_be_print)="openPrintMission($event)"
-        (mission_selected)="openDetailMission($event)"></app-liste-mission>
+        (mission_selected)="openDetailMission($event)" (go_menu_acceil)="gotoMenuItem($event)">
+      </app-liste-mission>
       </ng-container>
 
      <!-- Component detail de mission -->
       <div class="kl-main-content" *ngIf="isdetail">
         <ng-container >
           <app-detail-mission [exercice_id]="exercice_id"
-          [Mission]="missionSelectedDetail">
+          [Mission]="missionSelectedDetail" (back_to_list_mission)="gotoMenuItem($event)">
           </app-detail-mission>
         </ng-container>
       </div>
 
      <!-- Component programmation mission nouvelle mission -->
-      <div class="kl-main-content" *ngIf="isProgrammerMission">
+      <div  *ngIf="isProgrammerMission">
         <ng-container>
-          <app-programmer></app-programmer>
+          <app-programmer (back_to_list_mission)="gotoMenuItem($event)"></app-programmer>
         </ng-container>
       </div>
 

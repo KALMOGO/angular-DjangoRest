@@ -16,7 +16,7 @@ mat-toolbar{
   /* border-right:2px solid rgba(0, 0, 0, 0.216); */
   border-radius: 5px;
   height: 100vh;
-  flex:2 1 auto;
+  /* flex:2 1 auto; */
 }
 /* creation d'un side bar */
 .kl-side-bar{
@@ -33,8 +33,10 @@ mat-toolbar{
 }
 /* creation du main content */
 .kl-main-content{
-  flex:5 1 auto;
+  width:100%;
   padding: 20px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* rendre un contenu scrolable */

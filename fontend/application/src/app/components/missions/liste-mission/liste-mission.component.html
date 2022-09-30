@@ -1,9 +1,16 @@
 <ng-container >
 
   <div class="missionsList-actions" >
-   <!-- Input de filtrage des mission -->
-    <section>
-      <mat-form-field class="example-full-width">
+  <!-- Input de filtrage des mission -->
+    <section style="padding-left: 25px;">
+      <mat-button-toggle-group [formControl]="navigationSelected" (change)="openMenuSeleted()">
+        <mat-button-toggle   *ngFor="let mission of menuMission ;"
+        [value]="mission.nom" [checked]=" mission.nom === 'Acceuil' ">
+          {{mission.nom}}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-form-field style="margin-left:10%;" class="example-full-width">
         <mat-label>filtre</mat-label>
         <input type="text"
               aria-label="filtre"
@@ -15,7 +22,7 @@
       <!-- Section choix de l'etat des mission à afficher  -->
     <section>
       <mat-button-toggle-group (change)="listerMissionParStatus(choiceStatus.value)"
-          #choiceStatus="matButtonToggleGroup" appearance="legacy">
+          #choiceStatus="matButtonToggleGroup">
         <mat-button-toggle [value]="true">En cours</mat-button-toggle>
         <mat-button-toggle color="primary" [value]="false">Terminer</mat-button-toggle>
       </mat-button-toggle-group>
@@ -50,7 +57,7 @@
         </div>
     </div>
 
-    <mat-selection-list #selectedMultiMission
+    <mat-selection-list #selectedMultiMission style="padding-left: 25px;"
       (selectionChange)="onSelectionMissionChange(selectedMultiMission.selectedOptions.selected)">
       <mat-list-option  color="primary" [value]="mission"
       *ngFor="let mission of listeMission" >

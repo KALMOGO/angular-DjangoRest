@@ -15,6 +15,7 @@ import { BilanMissionsComponent } from './components/missions/bilan-missions/bil
 import { ModalActionMissionComponent } from './components/missions/modal-action-mission/modal-action-mission.component';
 import { ListeMissionComponent } from './components/missions/liste-mission/liste-mission.component';
 import { DetailMissionComponent } from './components/missions/detail-mission/detail-mission.component';
+import { NotificationsComponent } from './components/missions/notifications/notifications.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { DetailMissionComponent } from './components/missions/detail-mission/det
     BilanMissionsComponent,
     ModalActionMissionComponent,
     ListeMissionComponent,
-    DetailMissionComponent
+    DetailMissionComponent,
+    NotificationsComponent
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   imports: [

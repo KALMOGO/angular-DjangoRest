@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -15,6 +15,9 @@ import { ProgrammerService } from './programmer.service';
 
 export class ProgrammerComponent implements OnInit {
   sub!:Subscription
+
+  @Output()
+  back_to_list_mission:EventEmitter<string> = new EventEmitter();
 
   // recuperation de la mission a voir le detail
   exercice_id!:number;
@@ -392,6 +395,10 @@ change_mode_evaluation(){
   }
 
    //
+
+   gotoAcceuiMission(){
+      this.back_to_list_mission.emit('Acceuil')
+   }
   ngOnDestroy(): void {
       //this.sub.unsubscribe();
   }

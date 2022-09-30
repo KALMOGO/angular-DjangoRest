@@ -1,12 +1,15 @@
 <div id="kl-info-title">
-  <h3 class ="mat-h2">Programmer une mission</h3>
-  <span > <b style="color:black">Etat:</b>
-     <b style="color:green"> Nouvelle mission</b>
-   </span>
+  <h3 class="mat-h2">
+    <a style="cursor:pointer; color:blue" (click)="gotoAcceuiMission()">Acceuil/</a>
+    <span>Programmation</span>
+  </h3>
+  <span style="padding-right:2%"> <b style="color:black">Etat:</b>
+  <b style="color:green"> Nouvelle mission</b>
+  </span>
 </div>
+<mat-divider></mat-divider>
 
-<div style="position:relative; right:-25px; margin-bottom: 25px;">
-  <mat-divider></mat-divider>
+<div style="position:relative;margin-bottom: 25px;">
 
     <!-- information sur les generales d'une mission -->
     <section id="kl-info-Mission">
@@ -78,7 +81,7 @@
     <!-- information sur les produits d'une mission -->
     <section id="kl-info-Produits">
         <h4>Listes des produits</h4>
-        <mat-form-field appearance="outline" style="padding-left:10px">
+        <mat-form-field appearance="outline" class="kl-select-prd-dp">
           <!--
              selection des produits a transporter
              (closed)="onSelectionTeminer()": Evenement
@@ -95,7 +98,7 @@
         </mat-form-field>
 
           <!-- Ajout des field de produit transporter -->
-      <form [formGroup]="formMission">
+      <form [formGroup]="formMission" class="kl-info-prod-dep">
         <ng-container  formArrayName='liste_produits'>
 
           <div *ngFor="let control of  produitsFieldAsFormArray.controls ;let i = index;">
@@ -188,7 +191,7 @@
     <!-- information sur les depenses d'une mission -->
     <section id="kl-info-depenses">
       <h4>Listes des depenses</h4>
-      <mat-form-field appearance="outline" style="padding-left:10px">
+      <mat-form-field appearance="outline" class="kl-select-prd-dp">
         <mat-label>Selectionner depenses</mat-label>
 
         <mat-select  (closed)="onSelectionDepenseTeminer()" [formControl]="depenseSelectionnes" multiple>

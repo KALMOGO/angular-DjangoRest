@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +23,9 @@ export class ListeMissionComponent implements OnInit {
   @Output()
   mission_to_be_print:EventEmitter<AcceuilMissionList> = new EventEmitter();
 
+  @Output()
+  go_menu_acceil:EventEmitter<string> = new EventEmitter();
+
   sub:Subscription = new Subscription();
   isWait : boolean = true;
   exercice_id:number = -1; // exercice parent à la mission
@@ -33,10 +37,11 @@ export class ListeMissionComponent implements OnInit {
      {nom:'Acceuil', ulrs:'acceuil'},
      {nom:'Nouvelle mission', urls:'programmer'},
      {nom:'Bilan', urls:'bilan'},
-     {nom:'Retour', urls:'exercices'},
  ];
 
  endPointGlobal:string = '';
+ navigationSelected = new FormControl('');
+  fontStyle?: string;
 
  constructor
  (
@@ -227,6 +232,10 @@ export class ListeMissionComponent implements OnInit {
   openDetailMission():void{
     // envoie de la mission selection pour modification
     this.mission_selected.emit(this.missionSelected[0].value)
+  }
+  openMenuSeleted():void{
+    if(this.navigationSelected.value === "Nouvelle mission") this.go_menu_acceil.emit('programmer');
+    if(this.navigationSelected.value === "Bilan") this.go_menu_acceil.emit('bilan');
   }
 
   // recuperation des missions selection
