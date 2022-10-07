@@ -23,7 +23,7 @@ class Mantenances(models.Model):
     motif = models.TextField()
     date_creation = models.DateTimeField(auto_now_add=True)
     date_maintenance = models.DateTimeField()
-    montant = models.DecimalField(max_digits=19, decimal_places=5)
+    montant = models.DecimalField(max_digits=10, decimal_places=2)
 
     exerciceConcerne =  models.ForeignKey(Exercices, related_name='maintenances', on_delete=models.CASCADE)
     vehiculeConcerne = models.ForeignKey(VehiculeParcs, related_name='maintenances_effectuees', on_delete=models.CASCADE)
@@ -42,7 +42,7 @@ class InfosPieces(models.Model):
     '''
         model le cout des pieces et leur nombre
     '''
-    coutUnitaire = models.DecimalField(max_digits=19, decimal_places=10)
+    coutUnitaire = models.DecimalField(max_digits=10, decimal_places=2)
     nombre = models.PositiveIntegerField(default=0)
     date_creation = models.DateTimeField(auto_now_add=True)
     maintenanceConcernee = models.ForeignKey(Mantenances,related_name='pieces_enregistrees' ,on_delete=models.CASCADE)

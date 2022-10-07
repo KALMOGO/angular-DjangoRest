@@ -24,6 +24,7 @@ class Clients(models.Model):
     def __str__(self):
         return f"{self.nom} {self.prenom}"
 
+    
 class Produits(models.Model):
     '''
         table contenant la liste des produits transportes
@@ -128,7 +129,7 @@ class Chauffeurs(models.Model):
     nom= models.CharField(max_length=250)
     prenom= models.CharField(max_length=250)
     telephone=models.CharField(max_length=20)
-    salaire= models.DecimalField(max_digits=19, decimal_places=10,default=0.0)
+    salaire= models.DecimalField(max_digits=10, decimal_places=2,default=0.0)
     #photo = models.ImageField()
     date_creation = models.DateTimeField(auto_now_add=True)
 
@@ -140,7 +141,7 @@ class Chauffeurs(models.Model):
     )
 
     class Meta:
-        ordering = ['nom', 'prenom']
+        ordering = ['nom', 'prenom', 'salaire']
     
     def __str__(self) -> str:
         return f"{self.nom} {self.prenom}"
@@ -201,11 +202,6 @@ class documentVehicules(docsTransports):
         table contenant les informations sur la date d'expiration des documents
         d'un vehicule
     '''
-    LISTE_DOCS = [
-        ('visite technique','visite technique'),
-        ('assurance', 'assurance')
-    ]
-
     vehicule = models.ForeignKey(
         VehiculeParcs,
         related_name='infos_documents',
@@ -360,6 +356,11 @@ class Recettes(models.Model):
     def total(self):
         return ".2f"%(self.cout_unitaire * self.qte_produit )
 
+    @property
+    def unite(self):
+        unite = Produits.objects.all().filter(pk = self.produit.id).values('unite')[0]['unite']
+        
+        return f"{unite}"
 class RecetteDetailSansPesage(models.Model):
     ''''
         tables contenant la liste des recettes dont le systeme de calcule 
